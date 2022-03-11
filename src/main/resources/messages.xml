@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <MessageCollection xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:noNamespaceSchemaLocation="messagecollection.xsd">
+                   xsi:noNamespaceSchemaLocation="messagecollection.xsd">
 
-  <Plugin>
-    <ShortDescription>My SpotBugs Plugin</ShortDescription>
-    <Details>This plugin provides original detectors</Details>
-  </Plugin>
+    <Plugin>
+        <ShortDescription>My SpotBugs Plugin</ShortDescription>
+        <Details>This plugin provides original detectors</Details>
+    </Plugin>
 
-  <Detector class="com.spotbugs.plugin.MyDetector">
-    <Details>
-      Original detector to detect MY_BUG bug pattern.
-    </Details>
-  </Detector>
+    <Detector class="com.spotbugs.plugin.MyDetector">
+        <Details>
+            Original detector to detect MY_BUG bug pattern.
+        </Details>
+    </Detector>
 
-  <BugPattern type="MY_BUG">
-    <ShortDescription>Explain bug pattern shortly.</ShortDescription>
-    <LongDescription>
-      Explain existing problem in code, and how developer should improve their implementation.
-    </LongDescription>
-    <Details>
-<![CDATA[
-<p>Explain existing problem in code, and how developer should improve their implementation.</p>
+    <BugPattern type="MY_BUG">
+        <ShortDescription>Mutable Static Class.</ShortDescription>
+        <LongDescription>
+            Assigning values to static variables
+        </LongDescription>
+        <Details>
+            <![CDATA[
+<p> Please make sure it's thread-safe in multi-thread environment. Either make it immutable or make sure it is not reassigned after initialization</p>
 ]]>
-    </Details>
-  </BugPattern>
+        </Details>
+    </BugPattern>
 
-  <BugCode abbrev="MY">My SpotBugs BugCode</BugCode>
+    <BugCode abbrev="MY_BUG">Manipulating static variable</BugCode>
 </MessageCollection>

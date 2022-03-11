@@ -1,30 +1,87 @@
 package com.spotbugs.plugin;
 
-import org.apache.bcel.Const;
-
 import edu.umd.cs.findbugs.BugInstance;
 import edu.umd.cs.findbugs.BugReporter;
-import edu.umd.cs.findbugs.bcel.OpcodeStackDetector;
+import edu.umd.cs.findbugs.BytecodeScanningDetector;
+import edu.umd.cs.findbugs.ba.XField;
+import org.apache.bcel.Const;
 
-public class MyDetector extends OpcodeStackDetector {
-    private final BugReporter bugReporter;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Set;
 
-    public MyDetector(BugReporter bugReporter) {
-        this.bugReporter = bugReporter;
+public class MyDetector extends BytecodeScanningDetector {
+  private static final Set<String> IMMUTABLE_REFERENCE =
+      new HashSet<>(
+          Arrays.asList(
+              "java/lang/String",
+              "java/io/PrintStream",
+              "com/workshi/commonlib/tenant/TenantLocal"));
+
+  private final BugReporter bugReporter;
+  LinkedList<XField> seen = new LinkedList<>();
+
+  public MyDetector(BugReporter bugReporter) {
+    this.bugReporter = bugReporter;
+  }
+
+  @Override
+  public void report() {
+    System.out.println("Amount of interesting field: " + seen.size());
+  }
+
+  @Override
+  public void sawField() {
+    XField xField = getXFieldOperand();
+    System.out.println("Saw Field ================== " + xField);
+    System.out.println("Static object utilize ================== " + xField);
+    if (interesting(xField)) {
+      seen.add(xField);
     }
+  }
 
-    @Override
-    public void sawOpcode(int seen) {
-        if (seen != Const.GETSTATIC) {
-            return;
+  @Override
+  public void sawOpcode(int seen) {
+    XField xField2 = getXFieldOperand();
+    switch (seen) {
+        //      case Const.GETSTATIC: // Get static field from class
+      case Const.PUTSTATIC: // Set static field in class
+        XField xField = getXFieldOperand();
+        if (xField == null) {
+          break;
         }
-        if (getClassConstantOperand().equals("java/lang/System")
-                && getNameConstantOperand().equals("out")) {
-            // report bug when System.out is used in code
-            BugInstance bug = new BugInstance(this, "MY_BUG", NORMAL_PRIORITY)
-                    .addClassAndMethod(this)
-                    .addSourceLine(this, getPC());
-            bugReporter.reportBug(bug);
+        if (interesting(xField)) {
+          // report bug when System.out is used in code
+          BugInstance bug =
+              new BugInstance(this, "MY_BUG", NORMAL_PRIORITY)
+                  .addClassAndMethod(this)
+                  .addSourceLine(this, getPC());
+          bugReporter.reportBug(bug);
+          //          System.out.println("Static object utilize ================== " + xField);
+          //          System.out.println("xField.getSignature() -> " + xField.getSignature());
+          //          System.out.println("getClassConstantOperand() -> " +
+          // getClassConstantOperand());
         }
     }
+  }
+
+  private boolean interesting(XField field) {
+    if (!field.isStatic()) {
+      return false;
+    }
+    String signature = field.getSignature();
+    if (isMutableClasses(signature)) {
+      return true;
+    }
+    return signature.charAt(0) == '['; // reference of one array dimension
+  }
+
+  private boolean isMutableClasses(String signature) { // excluding primitive types
+    if (signature.startsWith("L") && signature.endsWith(";")) {
+      String fieldClass = signature.substring(1, signature.length() - 1);
+      return !IMMUTABLE_REFERENCE.contains(fieldClass);
+    }
+    return false;
+  }
 }
