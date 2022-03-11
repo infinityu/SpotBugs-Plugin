@@ -7,13 +7,30 @@
         <Details>This plugin provides original detectors</Details>
     </Plugin>
 
+    <Detector class="com.spotbugs.plugin.StaticFieldsDetector">
+        <Details>
+            Custom detector to detect MY_BUG bug pattern.
+        </Details>
+    </Detector>
     <Detector class="com.spotbugs.plugin.MyDetector">
         <Details>
-            Original detector to detect MY_BUG bug pattern.
+            Custom detector to detect MY_BUG bug pattern.
         </Details>
     </Detector>
 
-    <BugPattern type="MY_BUG">
+    <BugPattern type="DECLARE_MUTABLE_STATIC_FIELD">
+        <ShortDescription>DECLARE_MUTABLE_STATIC_FIELD</ShortDescription>
+        <LongDescription>
+            Assigning values to static variables
+        </LongDescription>
+        <Details>
+            <![CDATA[
+<p> Please make sure it's thread-safe in multi-thread environment. Either make it immutable or make sure it is not reassigned after initialization</p>
+]]>
+        </Details>
+    </BugPattern>
+
+    <BugPattern type="ASSIGN_MUTABLE_STATIC_FIELD">
         <ShortDescription>Mutable Static Class.</ShortDescription>
         <LongDescription>
             Assigning values to static variables
@@ -25,5 +42,5 @@
         </Details>
     </BugPattern>
 
-    <BugCode abbrev="MY_BUG">Manipulating static variable</BugCode>
+    <BugCode abbrev="Lay_BUG">Manipulating static variable</BugCode>
 </MessageCollection>
