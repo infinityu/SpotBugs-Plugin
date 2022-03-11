@@ -3,8 +3,8 @@
                 xsi:noNamespaceSchemaLocation="findbugsplugin.xsd"
                 pluginid="${groupId}.${artifactId}">
 
-    <Detector class="com.spotbugs.plugin.StaticFieldsDetector" reports="DECLARE_MUTABLE_STATIC_FIELD"/>
-<!--    <Detector class="com.spotbugs.plugin.MyDetector" reports="Lay_BUG"/>-->
+    <Detector class="com.spotbugs.plugin.DeclareStaticFields" reports="DECLARE_MUTABLE_STATIC_FIELD"/>
+    <Detector class="com.spotbugs.plugin.AssignStaticFields" reports="ASSIGN_MUTABLE_STATIC_FIELD"/>
 
     <BugPattern abbrev="DECLARE_STATIC" type="DECLARE_MUTABLE_STATIC_FIELD" category="CORRECTNESS"/>
     <BugPattern abbrev="ASSIGN_STATIC" type="ASSIGN_MUTABLE_STATIC_FIELD" category="CORRECTNESS"/>

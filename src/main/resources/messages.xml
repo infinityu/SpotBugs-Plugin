@@ -7,16 +7,19 @@
         <Details>This plugin provides original detectors</Details>
     </Plugin>
 
-    <Detector class="com.spotbugs.plugin.StaticFieldsDetector">
+
+    <Detector class="com.spotbugs.plugin.AssignStaticFields">
         <Details>
             Custom detector to detect MY_BUG bug pattern.
         </Details>
     </Detector>
-    <Detector class="com.spotbugs.plugin.MyDetector">
+
+    <Detector class="com.spotbugs.plugin.DeclareStaticFields">
         <Details>
             Custom detector to detect MY_BUG bug pattern.
         </Details>
     </Detector>
+
 
     <BugPattern type="DECLARE_MUTABLE_STATIC_FIELD">
         <ShortDescription>DECLARE_MUTABLE_STATIC_FIELD</ShortDescription>

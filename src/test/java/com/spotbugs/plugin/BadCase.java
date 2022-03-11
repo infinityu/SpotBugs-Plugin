@@ -10,14 +10,7 @@ class BadCase {
   public static String[] strings = new String[4];
   public static int[] ints = new int[4];
   public int ii = 404;
-  public byte aByte;
-  public short aShort;
-  public int anInt;
-  public long aLong;
-  public float aFloat;
-  public double aDouble;
-  char aChar;
-  boolean aBoolean;
+
 
   void useOfStaticObj() {
     System.out.println(singleton);

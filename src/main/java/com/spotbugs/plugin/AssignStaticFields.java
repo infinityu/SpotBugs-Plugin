@@ -6,14 +6,13 @@ import edu.umd.cs.findbugs.BytecodeScanningDetector;
 import edu.umd.cs.findbugs.ba.ClassContext;
 import edu.umd.cs.findbugs.ba.XField;
 import org.apache.bcel.Const;
-import org.apache.bcel.classfile.Field;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
 
-public class MyDetector extends BytecodeScanningDetector {
+public class AssignStaticFields extends BytecodeScanningDetector {
   private static final Set<String> IMMUTABLE_REFERENCE =
       new HashSet<>(
           Arrays.asList(
@@ -24,7 +23,7 @@ public class MyDetector extends BytecodeScanningDetector {
   private final BugReporter bugReporter;
   LinkedList<XField> seen = new LinkedList<>();
 
-  public MyDetector(BugReporter bugReporter) {
+  public AssignStaticFields(BugReporter bugReporter) {
     this.bugReporter = bugReporter;
   }
 
@@ -59,18 +58,6 @@ public class MyDetector extends BytecodeScanningDetector {
   @Override
   public void sawMethod() {
     System.out.println("sawMethod -> " + getXMethod());
-  }
-
-  @Override
-  public void visit(Field obj) {
-    System.out.println("visit -> " + obj);
-    obj.isStatic();
-    super.visit(obj);
-    BugInstance bug =
-        new BugInstance(this, "ASSIGN_MUTABLE_STATIC_FIELD", NORMAL_PRIORITY)
-            .addClassAndMethod(this)
-            .addSourceLine(this, getPC());
-//    bugReporter.reportBug(bug);
   }
 
   @Override
