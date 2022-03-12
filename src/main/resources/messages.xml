@@ -3,47 +3,42 @@
                    xsi:noNamespaceSchemaLocation="messagecollection.xsd">
 
     <Plugin>
-        <ShortDescription>My SpotBugs Plugin</ShortDescription>
-        <Details>This plugin provides original detectors</Details>
+        <ShortDescription>SpotBugs Plugin For Multi-Tenancy Security</ShortDescription>
+        <Details>This plugin provides custom detectors for scanning static fields.</Details>
     </Plugin>
-
-
-    <Detector class="com.spotbugs.plugin.AssignStaticFields">
-        <Details>
-            Custom detector to detect MY_BUG bug pattern.
-        </Details>
-    </Detector>
 
     <Detector class="com.spotbugs.plugin.DeclareStaticFields">
         <Details>
-            Custom detector to detect MY_BUG bug pattern.
+            Custom detector to detect DECLARE_MUTABLE_STATIC_FIELD bug pattern.
         </Details>
     </Detector>
 
+    <Detector class="com.spotbugs.plugin.AssignStaticFields">
+        <Details>
+            Custom detector to detect ASSIGN_MUTABLE_STATIC_FIELD bug pattern..
+        </Details>
+    </Detector>
 
     <BugPattern type="DECLARE_MUTABLE_STATIC_FIELD">
-        <ShortDescription>DECLARE_MUTABLE_STATIC_FIELD</ShortDescription>
+        <ShortDescription>Static field is declared.</ShortDescription>
         <LongDescription>
-            Assigning values to static variables
+            Static field is declared.
         </LongDescription>
         <Details>
-            <![CDATA[
-<p> Please make sure it's thread-safe in multi-thread environment. Either make it immutable or make sure it is not reassigned after initialization</p>
-]]>
+            <![CDATA[<p> Make sure it's thread-safe in multi-thread environment. </p>]]>
         </Details>
     </BugPattern>
 
     <BugPattern type="ASSIGN_MUTABLE_STATIC_FIELD">
-        <ShortDescription>Mutable Static Class.</ShortDescription>
+        <ShortDescription>Filed reference is changed</ShortDescription>
         <LongDescription>
-            Assigning values to static variables
+            Assigning values to static field
         </LongDescription>
         <Details>
-            <![CDATA[
-<p> Please make sure it's thread-safe in multi-thread environment. Either make it immutable or make sure it is not reassigned after initialization</p>
-]]>
+            <![CDATA[<p> Make sure it's thread-safe in multi-thread environment. </p>]]>
         </Details>
     </BugPattern>
 
-    <BugCode abbrev="Lay_BUG">Manipulating static variable</BugCode>
+    <BugCode abbrev="DECLARE_STATIC">Declare static field</BugCode>
+    <BugCode abbrev="ASSIGN_STATIC">Assign static field</BugCode>
 </MessageCollection>
